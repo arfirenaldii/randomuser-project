@@ -27,8 +27,15 @@ const makeSelectPage = () =>
     state => state.page,
   );
 
+const makeSelectGender = () =>
+  createSelector(
+    selectHomeDomain,
+    state => state.gender,
+  );
+
 export default makeSelectHome;
 export {
   selectHomeDomain,
-  makeSelectPage
+  makeSelectPage,
+  makeSelectGender,
 };

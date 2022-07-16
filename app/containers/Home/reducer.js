@@ -8,10 +8,12 @@ import {
   FETCH_USERS,
   USERS_FETCHED,
   FETCH_USERS_FAILED,
+  SET_GENDER,
 } from './constants';
 
 export const initialState = {
   users: [],
+  gender: 'all',
   page: 1,
   loadingFetchUsers: false,
   errorFetchUsers: false,
@@ -33,6 +35,11 @@ const homeReducer = (state = initialState, action) =>
       case FETCH_USERS_FAILED:
         draft.loadingFetchUsers = false;
         draft.errorFetchUsers = action.error;
+        break;
+
+      case SET_GENDER:
+        draft.gender = action.gender;
+        draft.loadingFetchUsers = true;
         break;
     }
   });

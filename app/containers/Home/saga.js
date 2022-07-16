@@ -2,15 +2,20 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import request from 'utils/request';
 import { API_URL } from 'utils/constants';
 
-import { FETCH_USERS } from './constants';
+import { FETCH_USERS, SET_GENDER } from './constants';
 
 import { usersFetched, fetchUsersFailed } from './actions';
 
-import { makeSelectPage } from './selectors';
+import { makeSelectPage, makeSelectGender } from './selectors';
 
 export function* fetchUsers() {
   const page = yield select(makeSelectPage());
-  const requestURL = `${API_URL}?seed=test&page=${page}&results=10`;
+  const gender = yield select(makeSelectGender());
+  let requestURL = `${API_URL}?page=${page}&results=10`;
+
+  if (gender) {
+    requestURL += `&gender=${gender}`
+  }
 
   try {
     const users = yield call(request, requestURL);
@@ -24,4 +29,5 @@ export function* fetchUsers() {
 // Individual exports for testing
 export default function* homeSaga() {
   yield takeLatest(FETCH_USERS, fetchUsers);
+  yield takeLatest(SET_GENDER, fetchUsers);
 }
