@@ -21,5 +21,14 @@ const makeSelectHome = () =>
     substate => substate,
   );
 
+const makeSelectPage = () =>
+  createSelector(
+    selectHomeDomain,
+    state => state.page,
+  );
+
 export default makeSelectHome;
-export { selectHomeDomain };
+export {
+  selectHomeDomain,
+  makeSelectPage
+};
