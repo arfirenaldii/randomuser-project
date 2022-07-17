@@ -21,7 +21,13 @@ import {
   setGender,
 } from './actions';
 
-function UserTable({ users }) {
+function UserTable({ users, first, last }) {
+  const [filteredUsers, setUsers] = useState([])
+
+  useEffect(() => {
+    setUsers(users.results.slice(first, last))
+  }, [filteredUsers])
+
   return (
     <table style={{ width: '100%' }}>
       <thead>
@@ -33,9 +39,9 @@ function UserTable({ users }) {
         </tr>
       </thead>
       <tbody>
-        {users.results && users.results.map(user =>
+        {filteredUsers.map(user =>
           <tr key={user.login.username}>
-            <td>{user.login.username}</td>
+            <td>{`[${user.gender}]`}{user.login.username}</td>
             <td>{`${user.name.first} ${user.name.last}`}</td>
             <td>{user.email}</td>
             <td>{user.registered.date}</td>
@@ -62,6 +68,7 @@ function SearchInput() {
           placeholder="Search..."
           name="search"
           value={search}
+          autoComplete="off"
           onChange={e => setSearch(e.target.value)}
         />
       </label>
@@ -93,13 +100,49 @@ function GenderFilter(props) {
   );
 };
 
+function Pagination(props) {
+  const pageNumbers = []
+  const lastPage = Math.ceil(props.results / props.resultPerPage)
+
+  for (let i = 1; i <= lastPage; i++) {
+    pageNumbers.push(i)
+  }
+
+  return (
+    <div>
+      <button
+        onClick={props.onClickPrev}
+        disabled={props.currentPage === 1}
+      >
+        {'<'}
+      </button>
+      {pageNumbers.map(number => (
+        <button key={number} onClick={() => props.onClickPaginate(number)}>
+          {number}
+        </button>
+      ))}
+      <button
+        onClick={props.onClickNext}
+        disabled={props.currentPage === lastPage}
+      >
+        {'>'}
+      </button>
+    </div>
+  )
+}
+
 export function Home(props) {
   useInjectReducer({ key: 'home', reducer });
   useInjectSaga({ key: 'home', saga });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [resultPerPage] = useState(10);
 
   useEffect(() => {
     props.fetchUsers();
   }, [])
+
+  const last = currentPage * resultPerPage
+  const first = last - resultPerPage
 
   return (
     <div>
@@ -109,8 +152,20 @@ export function Home(props) {
       {props.home.loadingFetchUsers ?
         <div>Loading...</div>
         :
-        <UserTable users={props.home.users} />
+        <UserTable
+          users={props.home.users}
+          first={first}
+          last={last}
+        />
       }
+      <Pagination
+        results={props.home.users.results && props.home.users.results.length}
+        resultPerPage={resultPerPage}
+        currentPage={currentPage}
+        onClickPaginate={page => setCurrentPage(page)}
+        onClickPrev={() => setCurrentPage(currentPage - 1)}
+        onClickNext={() => setCurrentPage(currentPage + 1)}
+      />
     </div>
   );
 }
