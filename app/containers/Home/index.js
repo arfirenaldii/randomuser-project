@@ -23,44 +23,7 @@ import {
 
 import UserTable from './components/UserTable';
 import SearchAndFilter from './components/SearchAndFilter';
-
-function Pagination(props) {
-  const {
-    users,
-    currentPage,
-    setCurrentPage,
-    resultPerPage,
-  } = props
-
-  const pageNumbers = []
-  const lastPage = Math.ceil(users / resultPerPage)
-
-  for (let i = 1; i <= lastPage; i++) {
-    pageNumbers.push(i)
-  }
-
-  return (
-    <div>
-      <button
-        onClick={() => setCurrentPage(currentPage - 1)}
-        disabled={currentPage === 1}
-      >
-        {'<'}
-      </button>
-      {pageNumbers.map(number => (
-        <button key={number} onClick={() => setCurrentPage(number)}>
-          {number}
-        </button>
-      ))}
-      <button
-        onClick={() => setCurrentPage(currentPage + 1)}
-        disabled={currentPage === lastPage}
-      >
-        {'>'}
-      </button>
-    </div>
-  )
-}
+import Pagination from './components/Pagination';
 
 export function Home(props) {
   useInjectReducer({ key: 'home', reducer });
