@@ -22,45 +22,7 @@ import {
 } from './actions';
 
 import UserTable from './components/UserTable';
-
-function SearchInput({ search, onChange }) {
-  const handleSubmit = event => {
-    event.preventDefault();
-    alert(search);
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Search
-        <input
-          type="text"
-          placeholder="Search..."
-          name="search"
-          value={search}
-          autoComplete="off"
-          onChange={onChange}
-        />
-      </label>
-      <input type="submit" value="Search" />
-    </form>
-  );
-};
-
-function GenderFilter(props) {
-  return (
-    <form>
-      <label>
-        Gender
-        <select value={props.home.gender} onChange={e => props.setGender(e.target.value)}>
-          <option value="all">All</option>
-          <option value="female">Female</option>
-          <option value="male">Male</option>
-        </select>
-      </label>
-    </form>
-  );
-};
+import SearchAndFilter from './components/SearchAndFilter';
 
 function Pagination(props) {
   const {
@@ -128,14 +90,22 @@ export function Home(props) {
     setUsers(searchUsers)
   }
 
+  const handleResetFilter = () => {
+    setSearch('')
+    props.setGender('all')
+  }
+
   return (
     <div>
-      <SearchInput
+      <SearchAndFilter
         search={search}
-        onChange={handleSearch}
+        onChangeSearch={handleSearch}
+        gender={props.home.gender}
+        setGender={props.setGender}
+        onClickFilter={handleResetFilter}
       />
-      <GenderFilter {...props} />
-      <button>Reset Filter</button>
+      <br />
+      <hr />
       {props.home.loadingFetchUsers ?
         <div>Loading...</div>
         :
