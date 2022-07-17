@@ -11,7 +11,7 @@ import { makeSelectPage, makeSelectGender } from './selectors';
 export function* fetchUsers() {
   const page = yield select(makeSelectPage());
   const gender = yield select(makeSelectGender());
-  let requestURL = `${API_URL}?page=${page}&results=10`;
+  let requestURL = `${API_URL}?results=50`;
 
   if (gender) {
     requestURL += `&gender=${gender}`

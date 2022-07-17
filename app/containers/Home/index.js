@@ -21,15 +21,10 @@ import {
   setGender,
 } from './actions';
 
-function UserTable({ users, currentPage, resultPerPage }) {
-  const [filteredUsers, setUsers] = useState([])
-
+function UserTable({ filteredUsers, currentPage, resultPerPage }) {
   const last = currentPage * resultPerPage
   const first = last - resultPerPage
-
-  useEffect(() => {
-    setUsers(users.results.slice(first, last))
-  }, [filteredUsers])
+  let filteredUsersNew = filteredUsers.slice(first, last)
 
   return (
     <table style={{ width: '100%' }}>
@@ -42,7 +37,7 @@ function UserTable({ users, currentPage, resultPerPage }) {
         </tr>
       </thead>
       <tbody>
-        {filteredUsers.map(user =>
+        {filteredUsersNew.map(user =>
           <tr key={user.login.username}>
             <td>{`[${user.gender}]`}{user.login.username}</td>
             <td>{`${user.name.first} ${user.name.last}`}</td>
@@ -55,8 +50,7 @@ function UserTable({ users, currentPage, resultPerPage }) {
   )
 };
 
-function SearchInput() {
-  const [search, setSearch] = useState('');
+function SearchInput({ search, onChange }) {
   const handleSubmit = event => {
     event.preventDefault();
     alert(search);
@@ -72,7 +66,7 @@ function SearchInput() {
           name="search"
           value={search}
           autoComplete="off"
-          onChange={e => setSearch(e.target.value)}
+          onChange={onChange}
         />
       </label>
       <input type="submit" value="Search" />
@@ -80,19 +74,11 @@ function SearchInput() {
   );
 };
 
-const useSetGender = (props) => {
-  const [gender, setGender] = useState('all');
-  return [gender, setGender];
-};
-
 function GenderFilter(props) {
-  // const [gender, setGender] = useSetGender(props);
-
   return (
     <form>
       <label>
         Gender
-        {/* <select value={gender} onChange={e => setGender(e.target.value)}> */}
         <select value={props.home.gender} onChange={e => props.setGender(e.target.value)}>
           <option value="all">All</option>
           <option value="female">Female</option>
@@ -104,8 +90,15 @@ function GenderFilter(props) {
 };
 
 function Pagination(props) {
+  const {
+    users,
+    currentPage,
+    setCurrentPage,
+    resultPerPage,
+  } = props
+
   const pageNumbers = []
-  const lastPage = Math.ceil(props.results / props.resultPerPage)
+  const lastPage = Math.ceil(users / resultPerPage)
 
   for (let i = 1; i <= lastPage; i++) {
     pageNumbers.push(i)
@@ -114,19 +107,19 @@ function Pagination(props) {
   return (
     <div>
       <button
-        onClick={() => props.setCurrentPage(props.currentPage - 1)}
-        disabled={props.currentPage === 1}
+        onClick={() => setCurrentPage(currentPage - 1)}
+        disabled={currentPage === 1}
       >
         {'<'}
       </button>
       {pageNumbers.map(number => (
-        <button key={number} onClick={() => props.setCurrentPage(number)}>
+        <button key={number} onClick={() => setCurrentPage(number)}>
           {number}
         </button>
       ))}
       <button
-        onClick={() => props.setCurrentPage(props.currentPage + 1)}
-        disabled={props.currentPage === lastPage}
+        onClick={() => setCurrentPage(currentPage + 1)}
+        disabled={currentPage === lastPage}
       >
         {'>'}
       </button>
@@ -137,33 +130,56 @@ function Pagination(props) {
 export function Home(props) {
   useInjectReducer({ key: 'home', reducer });
   useInjectSaga({ key: 'home', saga });
+
+  const [filteredUsers, setUsers] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [resultPerPage] = useState(10);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     props.fetchUsers();
   }, [])
 
+  useEffect(() => {
+    if (props.home.users.results && props.home.users.results.length > 0) {
+      setUsers(props.home.users.results)
+    }
+  }, [props.home.users])
+
+  const handleSearch = (event) => {
+    const searchUsers = props.home.users.results.filter(user =>
+      user.name.first.toLowerCase().includes(event.target.value)
+    )
+    setSearch(event.target.value)
+    setCurrentPage(1)
+    setUsers(searchUsers)
+  }
+
   return (
     <div>
-      <SearchInput />
+      <SearchInput
+        search={search}
+        onChange={handleSearch}
+      />
       <GenderFilter {...props} />
       <button>Reset Filter</button>
       {props.home.loadingFetchUsers ?
         <div>Loading...</div>
         :
-        <UserTable
-          users={props.home.users}
-          currentPage={currentPage}
-          resultPerPage={resultPerPage}
-        />
+        <>
+          <UserTable
+            filteredUsers={filteredUsers}
+            currentPage={currentPage}
+            resultPerPage={resultPerPage}
+          />
+          <Pagination
+            users={filteredUsers.length}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            resultPerPage={resultPerPage}
+          />
+        </>
       }
-      <Pagination
-        results={props.home.users.results && props.home.users.results.length}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        resultPerPage={resultPerPage}
-      />
     </div>
   );
 }
