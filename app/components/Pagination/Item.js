@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
+import { color } from 'components/colors';
+
 const StyledButton = styled.button`
   cursor: pointer;
   position: relative;
@@ -9,14 +11,14 @@ const StyledButton = styled.button`
   padding: 4px 12px;
   text-decoration: none;
   margin: 0 4px;
-  color: ${props => props.active ? "#0d6efd" : "#000000"};
+  color: ${props => props.active ? color.blue : color.black};
   background-color: #fff;
-  border: ${props => props.active ? "1px solid #0d6efd" : "1px solid #dee2e6"};
+  border: ${props => props.active ? `1px solid ${color.blue}` : "1px solid #dee2e6"};
 
   ${props => !props.active && `
     &:hover {
       text-decoration: none;
-      color: #000000;
+      color: ${color.black};
       background-color: #e9ecef;
       border-color: #dee2e6;
     }

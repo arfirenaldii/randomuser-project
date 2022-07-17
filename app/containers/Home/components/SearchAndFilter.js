@@ -23,7 +23,13 @@ function SearchAndFilter({ search, onChangeSearch, gender, setGender, onClickFil
         gender={gender}
         setGender={setGender}
       />
-      <Button onClick={onClickFilter}>Reset Filter</Button>
+      <Button
+        color="black"
+        line={true}
+        onClick={onClickFilter}
+      >
+        Reset Filter
+      </Button>
     </Wrapper>
   );
 };

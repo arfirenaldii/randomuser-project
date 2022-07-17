@@ -22,7 +22,7 @@ function SearchInput({ search, onChange }) {
         autoComplete="off"
         onChange={onChange}
       />
-      <Button>Search</Button>
+      <Button color="blue">Search</Button>
     </form>
   );
 };
