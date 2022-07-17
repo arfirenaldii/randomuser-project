@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import Button from 'components/Button';
+
 import SearchInput from './SearchInput';
 import GenderSelect from './GenderSelect';
 
@@ -21,7 +23,7 @@ function SearchAndFilter({ search, onChangeSearch, gender, setGender, onClickFil
         gender={gender}
         setGender={setGender}
       />
-      <button onClick={onClickFilter}>Reset Filter</button>
+      <Button onClick={onClickFilter}>Reset Filter</Button>
     </Wrapper>
   );
 };

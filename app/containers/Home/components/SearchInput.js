@@ -1,5 +1,8 @@
 import React from 'react';
 
+import Input from 'components/Input';
+import Button from 'components/Button';
+
 function SearchInput({ search, onChange }) {
   const handleSubmit = event => {
     event.preventDefault();
@@ -11,7 +14,7 @@ function SearchInput({ search, onChange }) {
       <div>
         <label>Search</label>
       </div>
-      <input
+      <Input
         type="text"
         placeholder="Search..."
         name="search"
@@ -19,7 +22,7 @@ function SearchInput({ search, onChange }) {
         autoComplete="off"
         onChange={onChange}
       />
-      <input type="submit" value="Search" />
+      <Button>Search</Button>
     </form>
   );
 };
