@@ -69,6 +69,7 @@ export function Home(props) {
       />
       <br />
       <hr />
+      <br />
       {props.home.loadingFetchUsers ?
         <div>Loading...</div>
         :

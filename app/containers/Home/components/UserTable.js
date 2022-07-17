@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
 
@@ -6,6 +6,8 @@ import TableHead from 'components/Table/TableHead';
 import TableRowHead from 'components/Table/TableRowHead';
 import TableRowBody from 'components/Table/TableRowBody';
 import TableData from 'components/Table/TableData';
+
+import { color } from 'components/colors';
 
 const TableWrapper = styled.div`
   width: 100%;
@@ -16,11 +18,23 @@ const StyledArrow = styled.span`
   cursor: pointer;
   font-size: 10px;
   line-height: 10px;
+
+  color: ${props => props.active ? color.blue : color.lightGrey};
+`;
+
+const SortWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const HeaderWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 function getSortedName(users, sort) {
   let sortedUsers = [...users];
-  if (sort === 'asc') {
+  if (sort) {
     sortedUsers.sort((a, b) =>
       a.name.first > b.name.first ? 1 : -1
     )
@@ -34,7 +48,7 @@ function getSortedName(users, sort) {
 
 function getSortedEmail(users, sort) {
   let sortedUsers = [...users];
-  if (sort === 'asc') {
+  if (sort) {
     sortedUsers.sort((a, b) =>
       a.email > b.email ? 1 : -1
     )
@@ -48,7 +62,7 @@ function getSortedEmail(users, sort) {
 
 function getSortedGender(users, sort) {
   let sortedUsers = [...users];
-  if (sort === 'asc') {
+  if (sort) {
     sortedUsers.sort((a, b) =>
       a.gender > b.gender ? 1 : -1
     )
@@ -62,7 +76,7 @@ function getSortedGender(users, sort) {
 
 function getSortedDate(users, sort) {
   let sortedUsers = [...users];
-  if (sort === 'asc') {
+  if (sort) {
     sortedUsers.sort((a, b) =>
       a.registered.date > b.registered.date ? 1 : -1
     )
@@ -74,15 +88,57 @@ function getSortedDate(users, sort) {
   return sortedUsers
 }
 
-const FlexColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-
 function UserTable({ setUsers, filteredUsers, currentPage, resultPerPage }) {
+  const [sorted, setSorted] = useState('');
+  const [active, setActive] = useState('');
+
   const last = currentPage * resultPerPage
   const first = last - resultPerPage
   let filteredUsersNew = filteredUsers.slice(first, last)
+
+  const handleSortName = (sort) => {
+    setActive('name')
+    if (active !== 'name') {
+      setSorted(sort)
+      setUsers(getSortedName(filteredUsers, sort))
+    } else {
+      setSorted(!sorted)
+      setUsers(getSortedName(filteredUsers, !sorted))
+    }
+  }
+
+  const handleSortEmail = (sort) => {
+    setActive('email')
+    if (active !== 'email') {
+      setSorted(sort)
+      setUsers(getSortedEmail(filteredUsers, sort))
+    } else {
+      setSorted(!sorted)
+      setUsers(getSortedEmail(filteredUsers, !sorted))
+    }
+  }
+
+  const handleSortGender = (sort) => {
+    setActive('gender')
+    if (active !== 'gender') {
+      setSorted(sort)
+      setUsers(getSortedGender(filteredUsers, sort))
+    } else {
+      setSorted(!sorted)
+      setUsers(getSortedGender(filteredUsers, !sorted))
+    }
+  }
+
+  const handleSortDate = (sort) => {
+    setActive('date')
+    if (active !== 'date') {
+      setSorted(sort)
+      setUsers(getSortedDate(filteredUsers, sort))
+    } else {
+      setSorted(!sorted)
+      setUsers(getSortedDate(filteredUsers, !sorted))
+    }
+  }
 
   return (
     <TableWrapper>
@@ -90,27 +146,44 @@ function UserTable({ setUsers, filteredUsers, currentPage, resultPerPage }) {
         <thead>
           <TableRowHead>
             <TableHead>Username</TableHead>
-            <TableHead style={{ display: 'flex' }}>
-              Name
-              <FlexColumn>
-                <StyledArrow onClick={() => setUsers(getSortedName(filteredUsers, 'asc'))}>▲</StyledArrow>
-                <StyledArrow onClick={() => setUsers(getSortedName(filteredUsers, 'desc'))}>▼</StyledArrow>
-              </FlexColumn>
+            <TableHead
+              active={active === 'name'}
+              onClick={() => handleSortName(true)}
+            >
+              <HeaderWrapper>
+                <span>Name</span>
+                <SortWrapper>
+                  <StyledArrow active={active === 'name' && sorted === true}>▲</StyledArrow>
+                  <StyledArrow active={active === 'name' && sorted === false}>▼</StyledArrow>
+                </SortWrapper>
+              </HeaderWrapper>
             </TableHead>
-            <TableHead>
-              Email
-              <StyledArrow onClick={() => setUsers(getSortedEmail(filteredUsers, 'asc'))}>▲</StyledArrow>
-              <StyledArrow onClick={() => setUsers(getSortedEmail(filteredUsers, 'desc'))}>▼</StyledArrow>
+            <TableHead active={active === 'email'} onClick={() => handleSortEmail(true)}>
+              <HeaderWrapper>
+                <span>Email</span>
+                <SortWrapper>
+                  <StyledArrow active={active === 'email' && sorted === true}>▲</StyledArrow>
+                  <StyledArrow active={active === 'email' && sorted === false}>▼</StyledArrow>
+                </SortWrapper>
+              </HeaderWrapper>
             </TableHead>
-            <TableHead>
-              Gender
-              <StyledArrow onClick={() => setUsers(getSortedGender(filteredUsers, 'asc'))}>▲</StyledArrow>
-              <StyledArrow onClick={() => setUsers(getSortedGender(filteredUsers, 'desc'))}>▼</StyledArrow>
+            <TableHead active={active === 'gender'} onClick={() => handleSortGender(true)}>
+              <HeaderWrapper>
+                <span>Gender</span>
+                <SortWrapper>
+                  <StyledArrow active={active === 'gender' && sorted === true}>▲</StyledArrow>
+                  <StyledArrow active={active === 'gender' && sorted === false}>▼</StyledArrow>
+                </SortWrapper>
+              </HeaderWrapper>
             </TableHead>
-            <TableHead>
-              Registered Date
-              <StyledArrow onClick={() => setUsers(getSortedDate(filteredUsers, 'asc'))}>▲</StyledArrow>
-              <StyledArrow onClick={() => setUsers(getSortedDate(filteredUsers, 'desc'))}>▼</StyledArrow>
+            <TableHead active={active === 'date'} onClick={() => handleSortDate(true)}>
+              <HeaderWrapper>
+                <span>Registered Date</span>
+                <SortWrapper>
+                  <StyledArrow active={active === 'date' && sorted === true}>▲</StyledArrow>
+                  <StyledArrow active={active === 'date' && sorted === false}>▼</StyledArrow>
+                </SortWrapper>
+              </HeaderWrapper>
             </TableHead>
           </TableRowHead>
         </thead>
