@@ -10,7 +10,7 @@ export const Input = styled.input`
   color: #212529;
   background-color: ${color.white};
   background-clip: padding-box;
-  border: 1px solid #ced4da;
+  border: 1px solid ${color.lightGrey};
   appearance: none;
   border-radius: 4px;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;

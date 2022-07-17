@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-import ChevronDown from './images/chevron-down.svg'
+import { color } from 'components/colors';
+
+import ChevronDown from './images/chevron-down.svg';
 
 export const Select = styled.select`
   cursor: pointer;
@@ -12,12 +14,12 @@ export const Select = styled.select`
   font-weight: 400;
   line-height: 1.5;
   color: #212529;
-  background-color: #fff;
+  background-color: ${color.white};
   background-image: url("${ChevronDown}");
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   background-size: 16px 12px;
-  border: 1px solid #ced4da;
+  border: 1px solid ${color.lightGrey};
   border-radius: 0.375rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   -webkit-appearance: none;

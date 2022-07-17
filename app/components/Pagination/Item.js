@@ -12,8 +12,8 @@ const StyledButton = styled.button`
   text-decoration: none;
   margin: 0 4px;
   color: ${props => props.active ? color.blue : color.black};
-  background-color: #fff;
-  border: ${props => props.active ? `1px solid ${color.blue}` : "1px solid #dee2e6"};
+  background-color: ${color.white};
+  border: ${props => props.active ? `1px solid ${color.blue}` : `1px solid ${color.lightGrey}`};
 
   ${props => !props.active && `
     &:hover {
@@ -28,7 +28,7 @@ const StyledButton = styled.button`
     pointer-events: none;
     cursor: auto;
     color: #6c757d;
-    background-color: #fff;
+    background-color: ${color.white};
     border-color: #dee2e6;
   `}
 `;
