@@ -21,6 +21,8 @@ import {
   setGender,
 } from './actions';
 
+import { useDebounce } from './utils/debounce';
+
 import UserTable from './components/UserTable';
 import SearchAndFilter from './components/SearchAndFilter';
 import Pagination from './components/Pagination';
@@ -44,13 +46,25 @@ export function Home(props) {
     }
   }, [props.home.users])
 
+  useDebounce(() => {
+    if (props.home.users.length > 0) {
+      const searchUsers = props.home.users.filter(user =>
+        user.name.first.toLowerCase().includes(search)
+      )
+      setCurrentPage(1)
+      setUsers(searchUsers)
+    }
+  }, [search], 800);
+
   const handleSearch = (event) => {
-    const searchUsers = props.home.users.filter(user =>
-      user.name.first.toLowerCase().includes(event.target.value)
-    )
     setSearch(event.target.value)
-    setCurrentPage(1)
-    setUsers(searchUsers)
+
+    // const searchUsers = props.home.users.filter(user =>
+    //   user.name.first.toLowerCase().includes(event.target.value)
+    // )
+    // setSearch(event.target.value)
+    // setCurrentPage(1)
+    // setUsers(searchUsers)
   }
 
   const handleResetFilter = () => {
