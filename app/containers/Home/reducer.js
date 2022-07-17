@@ -29,7 +29,7 @@ const homeReducer = (state = initialState, action) =>
 
       case USERS_FETCHED:
         draft.loadingFetchUsers = false;
-        draft.users = action.users;
+        draft.users = action.users.results;
         break;
 
       case FETCH_USERS_FAILED:

@@ -21,34 +21,7 @@ import {
   setGender,
 } from './actions';
 
-function UserTable({ filteredUsers, currentPage, resultPerPage }) {
-  const last = currentPage * resultPerPage
-  const first = last - resultPerPage
-  let filteredUsersNew = filteredUsers.slice(first, last)
-
-  return (
-    <table style={{ width: '100%' }}>
-      <thead>
-        <tr>
-          <th>Username</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Registered Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        {filteredUsersNew.map(user =>
-          <tr key={user.login.username}>
-            <td>{`[${user.gender}]`}{user.login.username}</td>
-            <td>{`${user.name.first} ${user.name.last}`}</td>
-            <td>{user.email}</td>
-            <td>{user.registered.date}</td>
-          </tr>
-        )}
-      </tbody>
-    </table>
-  )
-};
+import UserTable from './components/UserTable';
 
 function SearchInput({ search, onChange }) {
   const handleSubmit = event => {
@@ -141,13 +114,13 @@ export function Home(props) {
   }, [])
 
   useEffect(() => {
-    if (props.home.users.results && props.home.users.results.length > 0) {
-      setUsers(props.home.users.results)
+    if (props.home.users.length > 0) {
+      setUsers(props.home.users)
     }
   }, [props.home.users])
 
   const handleSearch = (event) => {
-    const searchUsers = props.home.users.results.filter(user =>
+    const searchUsers = props.home.users.filter(user =>
       user.name.first.toLowerCase().includes(event.target.value)
     )
     setSearch(event.target.value)
@@ -168,6 +141,7 @@ export function Home(props) {
         :
         <>
           <UserTable
+            setUsers={setUsers}
             filteredUsers={filteredUsers}
             currentPage={currentPage}
             resultPerPage={resultPerPage}
