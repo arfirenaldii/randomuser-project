@@ -2,6 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
 
+import TableHead from 'components/Table/TableHead';
+import TableRowHead from 'components/Table/TableRowHead';
+import TableRowBody from 'components/Table/TableRowBody';
+import TableData from 'components/Table/TableData';
+
 const TableWrapper = styled.div`
   width: 100%;
   overflow-x: auto;
@@ -9,6 +14,8 @@ const TableWrapper = styled.div`
 
 const StyledArrow = styled.span`
   cursor: pointer;
+  font-size: 10px;
+  line-height: 10px;
 `;
 
 function getSortedName(users, sort) {
@@ -67,6 +74,11 @@ function getSortedDate(users, sort) {
   return sortedUsers
 }
 
+const FlexColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
 function UserTable({ setUsers, filteredUsers, currentPage, resultPerPage }) {
   const last = currentPage * resultPerPage
   const first = last - resultPerPage
@@ -76,39 +88,41 @@ function UserTable({ setUsers, filteredUsers, currentPage, resultPerPage }) {
     <TableWrapper>
       <table style={{ width: '100%' }}>
         <thead>
-          <tr>
-            <th>Username</th>
-            <th>
+          <TableRowHead>
+            <TableHead>Username</TableHead>
+            <TableHead style={{ display: 'flex' }}>
               Name
-              <StyledArrow onClick={() => setUsers(getSortedName(filteredUsers, 'asc'))}>▲</StyledArrow>
-              <StyledArrow onClick={() => setUsers(getSortedName(filteredUsers, 'desc'))}>▼</StyledArrow>
-            </th>
-            <th>
+              <FlexColumn>
+                <StyledArrow onClick={() => setUsers(getSortedName(filteredUsers, 'asc'))}>▲</StyledArrow>
+                <StyledArrow onClick={() => setUsers(getSortedName(filteredUsers, 'desc'))}>▼</StyledArrow>
+              </FlexColumn>
+            </TableHead>
+            <TableHead>
               Email
               <StyledArrow onClick={() => setUsers(getSortedEmail(filteredUsers, 'asc'))}>▲</StyledArrow>
               <StyledArrow onClick={() => setUsers(getSortedEmail(filteredUsers, 'desc'))}>▼</StyledArrow>
-            </th>
-            <th>
+            </TableHead>
+            <TableHead>
               Gender
               <StyledArrow onClick={() => setUsers(getSortedGender(filteredUsers, 'asc'))}>▲</StyledArrow>
               <StyledArrow onClick={() => setUsers(getSortedGender(filteredUsers, 'desc'))}>▼</StyledArrow>
-            </th>
-            <th>
+            </TableHead>
+            <TableHead>
               Registered Date
               <StyledArrow onClick={() => setUsers(getSortedDate(filteredUsers, 'asc'))}>▲</StyledArrow>
               <StyledArrow onClick={() => setUsers(getSortedDate(filteredUsers, 'desc'))}>▼</StyledArrow>
-            </th>
-          </tr>
+            </TableHead>
+          </TableRowHead>
         </thead>
         <tbody>
           {filteredUsersNew.map(user =>
-            <tr key={user.login.username}>
-              <td>{user.login.username}</td>
-              <td>{`${user.name.first} ${user.name.last}`}</td>
-              <td>{user.email}</td>
-              <td>{user.gender}</td>
-              <td>{format(new Date(user.registered.date), 'yyyy-MM-dd HH:mm')}</td>
-            </tr>
+            <TableRowBody key={user.login.username}>
+              <TableData>{user.login.username}</TableData>
+              <TableData>{`${user.name.first} ${user.name.last}`}</TableData>
+              <TableData>{user.email}</TableData>
+              <TableData>{user.gender}</TableData>
+              <TableData>{format(new Date(user.registered.date), 'yyyy-MM-dd HH:mm')}</TableData>
+            </TableRowBody>
           )}
         </tbody>
       </table>
