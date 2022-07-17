@@ -21,8 +21,11 @@ import {
   setGender,
 } from './actions';
 
-function UserTable({ users, first, last }) {
+function UserTable({ users, currentPage, resultPerPage }) {
   const [filteredUsers, setUsers] = useState([])
+
+  const last = currentPage * resultPerPage
+  const first = last - resultPerPage
 
   useEffect(() => {
     setUsers(users.results.slice(first, last))
@@ -111,18 +114,18 @@ function Pagination(props) {
   return (
     <div>
       <button
-        onClick={props.onClickPrev}
+        onClick={() => props.setCurrentPage(props.currentPage - 1)}
         disabled={props.currentPage === 1}
       >
         {'<'}
       </button>
       {pageNumbers.map(number => (
-        <button key={number} onClick={() => props.onClickPaginate(number)}>
+        <button key={number} onClick={() => props.setCurrentPage(number)}>
           {number}
         </button>
       ))}
       <button
-        onClick={props.onClickNext}
+        onClick={() => props.setCurrentPage(props.currentPage + 1)}
         disabled={props.currentPage === lastPage}
       >
         {'>'}
@@ -141,9 +144,6 @@ export function Home(props) {
     props.fetchUsers();
   }, [])
 
-  const last = currentPage * resultPerPage
-  const first = last - resultPerPage
-
   return (
     <div>
       <SearchInput />
@@ -154,17 +154,15 @@ export function Home(props) {
         :
         <UserTable
           users={props.home.users}
-          first={first}
-          last={last}
+          currentPage={currentPage}
+          resultPerPage={resultPerPage}
         />
       }
       <Pagination
         results={props.home.users.results && props.home.users.results.length}
-        resultPerPage={resultPerPage}
         currentPage={currentPage}
-        onClickPaginate={page => setCurrentPage(page)}
-        onClickPrev={() => setCurrentPage(currentPage - 1)}
-        onClickNext={() => setCurrentPage(currentPage + 1)}
+        setCurrentPage={setCurrentPage}
+        resultPerPage={resultPerPage}
       />
     </div>
   );
