@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { format } from 'date-fns';
 
 const TableWrapper = styled.div`
   width: 100%;
@@ -106,7 +107,7 @@ function UserTable({ setUsers, filteredUsers, currentPage, resultPerPage }) {
               <td>{`${user.name.first} ${user.name.last}`}</td>
               <td>{user.email}</td>
               <td>{user.gender}</td>
-              <td>{user.registered.date}</td>
+              <td>{format(new Date(user.registered.date), 'yyyy-MM-dd HH:mm')}</td>
             </tr>
           )}
         </tbody>
