@@ -13,3 +13,6 @@ Running test
 ```Shell
 npm run test
 ```
+
+## Questions and answers
+[Questions and answers](qna.md)
