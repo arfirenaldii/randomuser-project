@@ -70,7 +70,41 @@ console.log(programmer.code()); // => 'I am Frontend Engineer. I can code JavaSc
 `extend` make `Programmer` class inherting from the `Job` class. `Programmer` has a constructor, it needs to call `super()` to call the parent's constructor in `Job` and inherit property `title` and new property `stack`.
 
 4. Imagine refactoring an ES5 application to use ES2015, how would you go about it?
-5. Give an example of how you structure applications with design patterns using closure and module
+
+- change functions with arrow functions
+- change var with const/let
+
+5. Give an example of how you structure applications with design patterns using closure and modules
+
+```js
+function Form() {
+  const [name, setName] = useState('');
+
+  const handleChangeName = (event) => {
+    setName(event.target.value)
+  }
+
+  return (
+    <div>
+      <input
+        type="text"
+        placeholder="Name"
+        value={name}
+        onChange={handleChangeName}
+      />
+      <p>{name}</p>
+    </div>
+  )
+}
+```
+Example: we have input and display the input value. To get and set the input value in `name` variable, we are using react hooks that unconsciously using closure. `name` variable can be access in scope of `Form` component but not accesible for outside `Form` component. To change `name` value, we need setter `setName` that include in react hooks `useState`. Function `setName`, `handleChangeName` can access variable from outer scope in `Form` and their local variable, or with parameter that pass to the function. It makes more flexible to access more variable and keep safe when we get value and modify value to keep in outer scope `Form`.
+
 6. What are your preferred ways of testing your web application?
+
+First, we need unit testing our code to verify that individual function work as expected. We can test our components and functions technically in React using `Jest` and `@testing-library/react`. It makes more comfortable to add new or change feature that we don't need to click testing in browser. We try to only expose methods and utilities that encourage you to write tests that closely resemble how your web pages are used. For example, we unit testing to assert and expecting that component, text, or image is displayed and existed.
+
+After that, we can end to end testing for better experience that behaves like a user to click or do some actions around the app and verify that it functions correctly. We can use `Cypress` that fits with `Jest` and `@testing-library/react`. End to end testing covers that can't be in unit testing, like for testing full flow from login to payment page, both frontend and backend.
+
 7. Which web server do you use? Why? Explain pros and cons of your choice.
+
 8. What is your preferred production deployment process?
