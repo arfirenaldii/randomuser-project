@@ -13,6 +13,8 @@ import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 
+import LoadingIndicator from 'components/LoadingIndicator';
+
 import makeSelectHome from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -79,7 +81,7 @@ export function Home(props) {
       <hr />
       <br />
       {props.home.loadingFetchUsers ?
-        <div>Loading...</div>
+        <LoadingIndicator />
         :
         <>
           <UserTable
