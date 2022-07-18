@@ -14,6 +14,11 @@ const TableWrapper = styled.div`
   overflow-x: auto;
 `;
 
+const StyledTable = styled.table`
+  width: 100%;
+  min-width: 900px;
+`;
+
 const StyledArrow = styled.span`
   cursor: pointer;
   font-size: 10px;
@@ -142,7 +147,7 @@ function UserTable({ setUsers, filteredUsers, currentPage, resultPerPage }) {
 
   return (
     <TableWrapper>
-      <table style={{ width: '100%' }}>
+      <StyledTable>
         <thead>
           <TableRowHead>
             <TableHead>Username</TableHead>
@@ -198,7 +203,7 @@ function UserTable({ setUsers, filteredUsers, currentPage, resultPerPage }) {
             </TableRowBody>
           )}
         </tbody>
-      </table>
+      </StyledTable>
     </TableWrapper>
   )
 };

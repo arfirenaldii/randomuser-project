@@ -58,17 +58,11 @@ export function Home(props) {
 
   const handleSearch = (event) => {
     setSearch(event.target.value)
-
-    // const searchUsers = props.home.users.filter(user =>
-    //   user.name.first.toLowerCase().includes(event.target.value)
-    // )
-    // setSearch(event.target.value)
-    // setCurrentPage(1)
-    // setUsers(searchUsers)
   }
 
   const handleResetFilter = () => {
     setSearch('')
+    setCurrentPage(1)
     props.setGender('all')
   }
 
