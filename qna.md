@@ -1,4 +1,5 @@
 1. Explain how Object Oriented Programming works with a thorough understanding of the keyword this and the new keyword
+
 JavaScript is not a class-based object-oriented language. But it still has ways of using object oriented programming (OOP) with object literal that have constructors and prototypes.
 
 `new` will call constructor class/function and bind the `this` variable as property to the new created object.
