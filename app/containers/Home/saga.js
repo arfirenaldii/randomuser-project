@@ -6,15 +6,14 @@ import { FETCH_USERS, SET_GENDER } from './constants';
 
 import { usersFetched, fetchUsersFailed } from './actions';
 
-import { makeSelectPage, makeSelectGender } from './selectors';
+import { makeSelectGender } from './selectors';
 
 export function* fetchUsers() {
-  const page = yield select(makeSelectPage());
   const gender = yield select(makeSelectGender());
   let requestURL = `${API_URL}?results=50`;
 
   if (gender) {
-    requestURL += `&gender=${gender}`
+    requestURL += `&gender=${gender}`;
   }
 
   try {
@@ -24,7 +23,6 @@ export function* fetchUsers() {
     yield put(fetchUsersFailed(err));
   }
 }
-
 
 // Individual exports for testing
 export default function* homeSaga() {
