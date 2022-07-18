@@ -70,6 +70,7 @@ export function Home(props) {
 
   return (
     <div>
+      <h2>Example With Search and Filter</h2>
       <SearchAndFilter
         search={search}
         onChangeSearch={handleSearch}
