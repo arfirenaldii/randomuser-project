@@ -10,6 +10,11 @@ const Wrapper = styled.div`
   display: flex;
   align-items: end;
   gap: 10px;
+
+  @media (max-width: 992px) {
+    flex-direction: column;
+    align-items: baseline;
+  }
 `;
 
 function SearchAndFilter({ search, onChangeSearch, gender, setGender, onClickFilter }) {
