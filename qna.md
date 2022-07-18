@@ -86,13 +86,13 @@
 
         return (
             <div>
-            <input
-                type="text"
-                placeholder="Name"
-                value={name}
-                onChange={handleChangeName}
-            />
-            <p>{name}</p>
+                <input
+                    type="text"
+                    placeholder="Name"
+                    value={name}
+                    onChange={handleChangeName}
+                />
+                <p>{name}</p>
             </div>
         )
     }
