@@ -75,6 +75,10 @@
 
     - change functions with arrow functions
     - change var with const/let
+    - change import/export
+    - using @babel/preset-env
+    - using class
+    - using this keyword
 
 5. **Give an example of how you structure applications with design patterns using closure and modules**
 
@@ -109,4 +113,18 @@
 
 7. **Which web server do you use? Why? Explain pros and cons of your choice**
 
+    Using S3 and Cloudfront CDN
+
+    Pros
+    - Don’t need to plan for and allocate a specific amount of storage space because S3 buckets scale automatically
+    - S3 is a serverless service, you don’t need to manage or patch servers that store files yourself
+    - Server can be smaller because it doesn’t have to handle requests for static content
+    - Using S3 and and CDN can be more cost effective, optimize for speed by pushing your content out to edge locations, making it highly available around the globe
+
+    Cons
+    - Sometimes files in client and server not update and failed invalidate to update current files in client
+    - Bad UI
+
 8. **What is your preferred production deployment process?**
+
+    Using CI/CD in production branch. When MR/PR to production branch (master), this CI/CD will execute and deploy to the server.
