@@ -1,3 +1,5 @@
+# Questions and Answers
+
 1. **Explain how Object Oriented Programming works with a thorough understanding of the keyword this and the new keyword**
 
     JavaScript is not a class-based object-oriented language. But it still has ways of using object oriented programming (OOP) with object literal that have constructors and prototypes.
@@ -31,7 +33,7 @@
         }
     }
 
-    const user = new User('Arfi renaldi');
+    const user = new User('Arfi Renaldi');
     user.getName(); // => 'Arfi Renaldi'
     ```
 
