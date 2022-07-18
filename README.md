@@ -14,6 +14,8 @@ Running test
 npm run test
 ```
 
+This app running on https://randomuser-arfi.herokuapp.com/
+
 ## Project Documentation
  - [Introduction](introduction.md)
  - [Questions and answers](qna.md)
