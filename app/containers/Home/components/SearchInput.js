@@ -1,12 +1,18 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import Input from 'components/Input';
 import Button from 'components/Button';
 
+import SearchIcon from '../images/search.svg';
+
+const StyledIcon = styled.img`
+  width: 15px;
+  height: 15px;
+`
 function SearchInput({ search, onChange }) {
   const handleSubmit = event => {
     event.preventDefault();
-    alert(search);
   };
 
   return (
@@ -22,7 +28,9 @@ function SearchInput({ search, onChange }) {
         autoComplete="off"
         onChange={onChange}
       />
-      <Button color="blue">Q</Button>
+      <Button color="blue">
+        <StyledIcon src={SearchIcon} alt="search" />
+      </Button>
     </form>
   );
 };
